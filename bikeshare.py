@@ -8,6 +8,16 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 months = ['january', 'february', 'march', 'april', 'may', 'june']
 
+def get_filter(filterName, allowedValues):
+    message = 'Please specify which '+filterName+ ' to analyze ('
+    for v in allowedValues:
+        message += '\''+v+'\','
+    message += ': '
+    filter = input(message).lower()
+    while filter not in allowedValues:
+        #ity = input('Please enter a valid value for the city (\'chicago\', \'new york city\', \'washington\'): ').lower()
+        filter = input(message).lower()
+    return filter
 
 def get_filters():
     """
@@ -20,19 +30,13 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    city = input('Please specify which city to analyze (\'chicago\', \'new york city\', \'washington\'): ').lower()
-    while city not in CITY_DATA.keys():
-        city = input('Please enter a valid value for the city (\'chicago\', \'new york city\', \'washington\'): ').lower()
-    # TO DO: get user input for month (all, january, february, ... , june)  
+    city  = get_filter('city',CITY_DATA.keys())
+    # TO DO: get user input for month (all, january, february, ... , june)
     months = ['all', 'january', 'february', 'march', 'april', 'may' , 'june']
-    month = input('Please specify the month according to which you want to filter (\'all\',\'january\', \'february\', \'march\', \'april\', \'may\', \'june\'): ').lower()
-    while month not in months:
-        month = input('Please enter a valid value for the month (\'all\',\'january\', \'february\', \'march\', \'april\', \'may\', \'june\'): ').lower()
+    month  = get_filter('month',months)
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     days = ['all','monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-    day = input('Please specify according to which you want to filter (\'all\' ,\'monday\' ,\'tuesday\', \'wednesday\', \'thursday\', \'friday\', \'saturday\', \'sunday\'): ').lower()
-    while day not in days:
-        day = input('Please enter a valid value for the day (\'all\' ,\'monday\' ,\'tuesday\', \'wednesday\', \'thursday\', \'friday\', \'saturday\', \'sunday\'): ').lower()
+    day  = get_filter('day',days)
 
     print('-'*40)
     return city, month, day
@@ -158,7 +162,7 @@ def user_stats(df):
         print(user_types,'\n')
     except KeyError:
         print('Gender column not found!')
-        
+
 
 
     # TO DO: Display earliest, most recent, and most common year of birth
@@ -182,15 +186,15 @@ def display_data(df):
         print(df.iloc[index:index+5])
         index += 5
         user_input = input('would you like to display more 5 rows of raw data? ').lower()
-        
+
 def main():
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
-        
+
         #added display here after the dataframe has been created and filtered by load_data()
         display_data(df)
-        
+
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)

@@ -8,14 +8,21 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 months = ['january', 'february', 'march', 'april', 'may', 'june']
 
+def valList_to_string(valList):
+    listStr = "("
+    for v in valList:
+        listStr += '\''+v+'\','
+    listStr = listStr[0:-2]
+    listStr += ')'
+    return listStr
+
 def get_filter(filterName, allowedValues):
-    message = 'Please specify which '+filterName+ ' to analyze ('
-    for v in allowedValues:
-        message += '\''+v+'\','
-    message += ': '
+    listStr = valList_to_string(allowedValues)
+    message = 'Please specify which '+filterName+ ' to analyze ' + listStr + ': '
     filter = input(message).lower()
+    message = 'Please provide a valid  '+filterName+ ' from the list -> ' + listStr + ': '
+
     while filter not in allowedValues:
-        #ity = input('Please enter a valid value for the city (\'chicago\', \'new york city\', \'washington\'): ').lower()
         filter = input(message).lower()
     return filter
 
